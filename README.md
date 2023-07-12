@@ -1,13 +1,14 @@
 Role Name
 =========
 
-Install Vector
+This role install Vector
 
 
 Role Variables
 --------------
-|version      | tag               |
-|vector_version | version for Vector|
+| vars | description |
+|------|----------------|
+| vector_version | Verson of Vector to install |
 
 Example Playbook
 ----------------
@@ -16,9 +17,14 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - role: vectore-role
+         - { role: vector-role }
 
 License
 -------
 
-BSD
+MTI
+
+Author Information
+------------------
+
+Maksim Tomaev
