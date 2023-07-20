@@ -1,0 +1,34 @@
+# Molecule managed
+
+{% if item.registry is defined %}
+FROM {{ item.registry.url }}/{{ item.image }}
+{% else %}
+FROM {{ item.image }}
+{% endif %}
+
+{% if item.env is defined %}
+{% for var, value in item.env.items() %}
+{% if value %}
+ENV {{ var }} {{ value }}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+RUN sed -i 's/^\(tsflags=*\)/# \1/g' /etc/yum.conf && yum makecache fast && yum upgrade -y && yum makecache fast && yum install -y sudo python3 systemd rsyslog man yum-plugin-ovl bash iproute && sed -i 's/plugins=0/plugins=1/g' /etc/yum.conf && yum clean all;
+
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
+    systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+    rm -rf /lib/systemd/system/multi-user.target.wants/*;\
+    rm -rf /etc/systemd/system/*.wants/*;\
+    rm -rf /lib/systemd/system/local-fs.target.wants/*; \
+    rm -rf /lib/systemd/system/sockets.target.wants/*udev*; \
+    rm -rf /lib/systemd/system/sockets.target.wants/*initctl*; \
+    rm -rf /lib/systemd/system/basic.target.wants/*;\
+    rm -rf /lib/systemd/system/anaconda.target.wants/*;
+
+RUN systemctl enable dbus.socket;
+RUN systemctl enable dbus.service;
+RUN systemctl enable rsyslog.service;
+
+VOLUME [ "/sys/fs/cgroup" ]
+CMD ["{{ item.command | default('/usr/sbin/init') }}"]
