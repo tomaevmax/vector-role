@@ -32,9 +32,10 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
     rm -rf /lib/systemd/system/sockets.target.wants/*initctl*; \
     rm -rf /lib/systemd/system/basic.target.wants/*;\
     rm -rf /lib/systemd/system/anaconda.target.wants/*;
-    # systemctl enable dbus.socket; \
-    # systemctl enable dbus.service; \
-    # systemctl enable rsyslog.service
+
+ RUN  systemctl enable dbus.socket;
+ RUN systemctl enable dbus.service;
+ RUN systemctl enable rsyslog.service;
 
 VOLUME [ "/sys/fs/cgroup" ]
 CMD ["{{ item.command | default('/usr/sbin/init') }}"]
