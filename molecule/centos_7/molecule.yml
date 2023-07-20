@@ -4,16 +4,17 @@ dependency:
 driver:
   name: podman
 platforms:
-  - name: pod_centos
-    image: docker.io/centos:7
-    pre_build_image: false
-    command: /sbin/init
+  - name: centos_7
+    image: centos:7
+    dockerfile: ../../resources/Dockerfile.j2
+    # pre_build_image: true
+    command: /usr/sbin/init
+    privileged: true
     tmpfs:
       - /run
       - /tmp
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    privileged: true
+      - /sys/fs/cgroup:/sys/fs/cgroup
 provisioner:
   name: ansible
 verifier:

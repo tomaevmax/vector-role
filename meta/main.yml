@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: ansible.vector_role
   author: Maksim Tomaev
   description: Install vectore
   company: netology
