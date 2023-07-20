@@ -4,7 +4,13 @@
 - name: Verify
   hosts: all
   gather_facts: false
+  vars:
+    vector_config_path: /etc/vector/vector.toml
   tasks:
-  - name: Example assertion
+  - name: Validation Vector configuration
+    ansible.builtin.command: "vector validate --no-environment --config-toml {{ vector_config_path }}"
+    changed_when: false
+    register: vector_validate
+  - name: Assert Vector validate config
     assert:
-      that: true
+      that: "'{{ vector_validate.rc }}' == '0'"

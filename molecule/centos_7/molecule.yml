@@ -5,10 +5,10 @@ driver:
   name: podman
 platforms:
   - name: centos_7
-    image: centos:7
-    dockerfile: ../../resources/Dockerfile.j2
-    # pre_build_image: true
-    command: /usr/sbin/init
+    image: docker.io/pycontribs/centos:7
+    # dockerfile: ../../resources/Dockerfile.j2
+    pre_build_image: true
+    command: /sbin/init && sleep 5000000
     privileged: true
     tmpfs:
       - /run
